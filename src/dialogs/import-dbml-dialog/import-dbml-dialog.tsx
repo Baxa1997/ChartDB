@@ -31,7 +31,7 @@ import { setupDBMLLanguage } from '@/components/code-snippet/languages/dbml-lang
 import { useToast } from '@/components/toast/use-toast';
 import { Spinner } from '@/components/spinner/spinner';
 import { debounce } from '@/lib/utils';
-// import { useSearchParams } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 interface DBMLError {
@@ -81,12 +81,12 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     dialog,
     withCreateEmptyDiagram,
 }) => {
-    // const [searchParams] = useSearchParams();
+    const [searchParams] = useSearchParams();
     const [content, setContent] = useState('');
-    // const projectId = searchParams.get('project_id');
-    // const envId = searchParams.get('environment_id');
-    const projectId = '27ab570d-1087-4ad8-b1a4-4a0425092a0f';
-    const envId = 'd9b643ac-e253-432f-8be1-c91f174b8dd7';
+    const projectId = searchParams.get('project_id');
+    const envId = searchParams.get('environment_id');
+    // const projectId = '27ab570d-1087-4ad8-b1a4-4a0425092a0f';
+    // const envId = 'd9b643ac-e253-432f-8be1-c91f174b8dd7';
 
     const fetDbmlFile = async () => {
         await axios
@@ -100,7 +100,6 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     };
 
     if (!content) fetDbmlFile();
-    // fetDbmlFile();
 
     const { t } = useTranslation();
     const initialDBML = content;
