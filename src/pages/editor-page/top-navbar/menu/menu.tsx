@@ -205,7 +205,7 @@ export const Menu: React.FC<MenuProps> = () => {
                             }
                         </MenubarShortcut>
                     </MenubarItem>
-                    {/* <MenubarItem onClick={updateDiagramUpdatedAt}>
+                    <MenubarItem onClick={updateDiagramUpdatedAt}>
                         {t('menu.file.save')}
                         <MenubarShortcut>
                             {
@@ -214,7 +214,7 @@ export const Menu: React.FC<MenuProps> = () => {
                                 ].keyCombinationLabel
                             }
                         </MenubarShortcut>
-                    </MenubarItem> */}
+                    </MenubarItem>
                     <MenubarSeparator />
                     <MenubarSub>
                         <MenubarSubTrigger>
