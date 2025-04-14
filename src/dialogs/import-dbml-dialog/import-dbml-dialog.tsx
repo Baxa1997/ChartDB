@@ -99,7 +99,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
             });
     };
 
-    if (Boolean(!content)) fetDbmlFile();
+    if (!content) fetDbmlFile();
     // fetDbmlFile();
 
     const { t } = useTranslation();
