@@ -91,7 +91,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     const fetDbmlFile = async () => {
         await axios
             .get(
-                `https://admin-api.ucode.run/v1/chart?project-id=${projectId}&environment-id=${envId}`
+                `https://app.u-code.io/v1/chart?project-id=${projectId}&environment-id=${envId}`
             )
             .then((res) => {
                 setContent(res?.data?.data?.dbml);
@@ -100,6 +100,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     };
 
     if (!content) fetDbmlFile();
+    // fetDbmlFile();
 
     const { t } = useTranslation();
     const initialDBML = content;
