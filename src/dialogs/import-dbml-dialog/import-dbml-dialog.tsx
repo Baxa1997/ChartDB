@@ -81,12 +81,12 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     dialog,
     withCreateEmptyDiagram,
 }) => {
-    const [searchParams] = useSearchParams();
+    // const [searchParams] = useSearchParams();
     const [content, setContent] = useState('');
-    const projectId = searchParams.get('project_id');
-    const envId = searchParams.get('environment_id');
-    // const projectId = '27ab570d-1087-4ad8-b1a4-4a0425092a0f';
-    // const envId = 'd9b643ac-e253-432f-8be1-c91f174b8dd7';
+    // const projectId = searchParams.get('project_id');
+    // const envId = searchParams.get('environment_id');
+    const projectId = '27ab570d-1087-4ad8-b1a4-4a0425092a0f';
+    const envId = 'd9b643ac-e253-432f-8be1-c91f174b8dd7';
 
     const fetDbmlFile = async () => {
         await axios
@@ -99,7 +99,8 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
             });
     };
 
-    fetDbmlFile();
+    if (Boolean(!content)) fetDbmlFile();
+    // fetDbmlFile();
 
     const { t } = useTranslation();
     const initialDBML = content;
