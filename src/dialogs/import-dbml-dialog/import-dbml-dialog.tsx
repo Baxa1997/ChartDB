@@ -123,13 +123,13 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     }
 
     useEffect(() => {
-        // window.parent.postMessage({ type: 'READY' }, 'http://localhost:7777');
+        window.parent.postMessage({ type: 'READY' }, 'http://localhost:7777');
         window.addEventListener('message', handleMessage);
 
         return () => {
             window.removeEventListener('message', handleMessage);
         };
-    }, []);
+    }, [handleMessage]);
 
     const { t } = useTranslation();
     const initialDBML = content;
