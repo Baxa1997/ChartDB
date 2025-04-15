@@ -93,7 +93,6 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
                 .then((res) => {
                     setContent(res?.data?.data?.dbml);
                     setDBMLContent(res?.data?.data?.dbml);
-                    window.removeEventListener('message', handleMessage);
                 });
         }
     };
@@ -126,9 +125,11 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     useEffect(() => {
         window.parent.postMessage({ type: 'READY' }, 'http://localhost:7777');
         window.addEventListener('message', handleMessage);
-    }, []);
 
-    // fetDbmlFile();
+        return () => {
+            window.removeEventListener('message', handleMessage);
+        };
+    }, []);
 
     const { t } = useTranslation();
     const initialDBML = content;
