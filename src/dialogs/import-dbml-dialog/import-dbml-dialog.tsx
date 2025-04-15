@@ -83,6 +83,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     const [content, setContent] = useState('');
     const [projectID, setProjectID] = useState('');
     const [envID, setEnvID] = useState('');
+    console.log('contentcontentcontentcontent', content);
 
     const fetDbmlFile = async () => {
         if (!!projectID && !!envID) {
@@ -93,6 +94,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
                 .then((res) => {
                     setContent(res?.data?.data?.dbml);
                     setDBMLContent(res?.data?.data?.dbml);
+                    window.removeEventListener('message', handleMessage);
                 });
         }
     };
@@ -119,11 +121,8 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
         }
     };
 
-    useEffect(() => {
-        window.parent.postMessage({ type: 'READY' }, 'http://localhost:7777');
-        window.addEventListener('message', handleMessage);
-        return () => window.removeEventListener('message', handleMessage);
-    }, []);
+    window.parent.postMessage({ type: 'READY' }, 'http://localhost:7777');
+    window.addEventListener('message', handleMessage);
 
     if (!content) fetDbmlFile();
 
