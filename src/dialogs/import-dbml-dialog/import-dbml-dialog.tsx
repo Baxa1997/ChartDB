@@ -105,18 +105,21 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
         };
     };
 
-    const handleMessage = (event: MessageEvent) => {
-        if (event.origin !== 'http://localhost:7777') {
-            return;
-        }
+    const handleMessage = useCallback(
+        (event: MessageEvent) => {
+            if (event.origin !== 'http://localhost:7777') {
+                return;
+            }
 
-        const data = event.data as ChartDataMessage;
+            const data = event.data as ChartDataMessage;
 
-        if (data.type === 'UPDATE_DATA') {
-            setProjectID(data.payload.projectID);
-            setEnvID(data.payload.envID);
-        }
-    };
+            if (data.type === 'UPDATE_DATA') {
+                setProjectID(data.payload.projectID);
+                setEnvID(data.payload.envID);
+            }
+        },
+        [setProjectID, setEnvID]
+    );
 
     if (!content) {
         fetDbmlFile();
@@ -129,7 +132,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
         return () => {
             window.removeEventListener('message', handleMessage);
         };
-    }, [handleMessage]);
+    }, []);
 
     const { t } = useTranslation();
     const initialDBML = content;
