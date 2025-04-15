@@ -31,7 +31,7 @@ import { setupDBMLLanguage } from '@/components/code-snippet/languages/dbml-lang
 import { useToast } from '@/components/toast/use-toast';
 import { Spinner } from '@/components/spinner/spinner';
 import { debounce } from '@/lib/utils';
-import { useSearchParams } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 interface DBMLError {
@@ -83,6 +83,10 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
 }) => {
     const [searchParams] = useSearchParams();
     const [content, setContent] = useState('');
+    const location = useLocation();
+
+    console.log('location', location);
+
     const projectId = searchParams.get('project_id');
     const envId = searchParams.get('environment_id');
     // const projectId = '27ab570d-1087-4ad8-b1a4-4a0425092a0f';
