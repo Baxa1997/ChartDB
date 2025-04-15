@@ -124,14 +124,9 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     }
 
     useEffect(() => {
-        if (!projectID && !envID) {
-            window.parent.postMessage(
-                { type: 'READY' },
-                'http://localhost:7777'
-            );
-            window.addEventListener('message', handleMessage);
-        }
-    }, [projectID, envID]);
+        window.parent.postMessage({ type: 'READY' }, 'http://localhost:7777');
+        window.addEventListener('message', handleMessage);
+    }, []);
 
     // fetDbmlFile();
 
