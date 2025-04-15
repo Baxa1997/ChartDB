@@ -18,7 +18,10 @@ import {
     DialogTitle,
 } from '@/components/dialog/dialog';
 import { Button } from '@/components/button/button';
-import type { BaseDialogProps } from '../common/base-dialog-props';
+import type {
+    BaseDialogProps,
+    BaseImportDialogProps,
+} from '../common/base-dialog-props';
 import { useTranslation } from 'react-i18next';
 import { Editor } from '@/components/code-snippet/code-snippet';
 import { useTheme } from '@/hooks/use-theme';
@@ -72,18 +75,18 @@ function parseDBMLError(error: unknown): DBMLError | null {
     return null;
 }
 
-export interface ImportDBMLDialogProps extends BaseDialogProps {
+export interface ImportDBMLDialogProps extends BaseImportDialogProps {
     withCreateEmptyDiagram?: boolean;
 }
 
 export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     dialog,
     withCreateEmptyDiagram,
+    setOpenImportDBMLDialog,
 }) => {
     const [content, setContent] = useState('');
     const [projectID, setProjectID] = useState('');
     const [envID, setEnvID] = useState('');
-    console.log('contentcontentcontentcontent', content);
 
     const fetDbmlFile = async () => {
         if (!!projectID && !!envID) {
@@ -92,6 +95,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
                     `https://admin-api.ucode.run/v1/chart?project-id=${projectID}&environment-id=${envID}`
                 )
                 .then((res) => {
+                    setOpenImportDBMLDialog(true);
                     setContent(res?.data?.data?.dbml);
                     setDBMLContent(res?.data?.data?.dbml);
                     window.removeEventListener('message', handleMessage);
@@ -121,10 +125,14 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
         }
     };
 
-    window.parent.postMessage({ type: 'READY' }, 'http://localhost:7777');
-    window.addEventListener('message', handleMessage);
+    if (!content) {
+        fetDbmlFile();
+    }
 
-    if (!content) fetDbmlFile();
+    if (!projectID && !envID) {
+        window.parent.postMessage({ type: 'READY' }, 'http://localhost:7777');
+        window.addEventListener('message', handleMessage);
+    }
 
     // fetDbmlFile();
 
