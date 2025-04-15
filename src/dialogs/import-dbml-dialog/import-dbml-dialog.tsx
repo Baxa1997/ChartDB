@@ -87,6 +87,9 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
 
     console.log('location', location);
 
+    const stateProjectID = location?.state?.project_id;
+    const envID = location?.state?.environment_id;
+
     const projectId = searchParams.get('project_id');
     const envId = searchParams.get('environment_id');
     // const projectId = '27ab570d-1087-4ad8-b1a4-4a0425092a0f';
@@ -95,7 +98,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     const fetDbmlFile = async () => {
         await axios
             .get(
-                `https://admin-api.ucode.run/v1/chart?project-id=${projectId}&environment-id=${envId}`
+                `https://admin-api.ucode.run/v1/chart?project-id=${projectId ?? stateProjectID}&environment-id=${envId ?? envID}`
             )
             .then((res) => {
                 setContent(res?.data?.data?.dbml);
