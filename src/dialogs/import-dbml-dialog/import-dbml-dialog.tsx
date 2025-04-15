@@ -31,7 +31,6 @@ import { setupDBMLLanguage } from '@/components/code-snippet/languages/dbml-lang
 import { useToast } from '@/components/toast/use-toast';
 import { Spinner } from '@/components/spinner/spinner';
 import { debounce } from '@/lib/utils';
-import { useLocation, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
 interface DBMLError {
@@ -81,32 +80,53 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     dialog,
     withCreateEmptyDiagram,
 }) => {
-    const [searchParams] = useSearchParams();
     const [content, setContent] = useState('');
-    const location = useLocation();
-
-    console.log('location', location);
-
-    const stateProjectID = location?.state?.project_id;
-    const envID = location?.state?.environment_id;
-
-    const projectId = searchParams.get('project_id');
-    const envId = searchParams.get('environment_id');
-    // const projectId = '27ab570d-1087-4ad8-b1a4-4a0425092a0f';
-    // const envId = 'd9b643ac-e253-432f-8be1-c91f174b8dd7';
+    const [projectID, setProjectID] = useState('');
+    const [envID, setEnvID] = useState('');
 
     const fetDbmlFile = async () => {
-        await axios
-            .get(
-                `https://admin-api.ucode.run/v1/chart?project-id=${projectId ?? stateProjectID}&environment-id=${envId ?? envID}`
-            )
-            .then((res) => {
-                setContent(res?.data?.data?.dbml);
-                setDBMLContent(res?.data?.data?.dbml);
-            });
+        if (!!projectID && !!envID) {
+            await axios
+                .get(
+                    `https://admin-api.ucode.run/v1/chart?project-id=${projectID}&environment-id=${envID}`
+                )
+                .then((res) => {
+                    setContent(res?.data?.data?.dbml);
+                    setDBMLContent(res?.data?.data?.dbml);
+                });
+        }
     };
 
+    type ChartDataMessage = {
+        type: 'UPDATE_DATA';
+        payload: {
+            projectID: string;
+            envID: string;
+        };
+    };
+
+    const handleMessage = (event: MessageEvent) => {
+        if (event.origin !== 'http://localhost:7777') {
+            console.warn('Ignored message from unknown origin:', event.origin);
+            return;
+        }
+
+        const data = event.data as ChartDataMessage;
+
+        if (data.type === 'UPDATE_DATA') {
+            setProjectID(data.payload.projectID);
+            setEnvID(data.payload.envID);
+        }
+    };
+
+    useEffect(() => {
+        window.parent.postMessage({ type: 'READY' }, 'http://localhost:7777');
+        window.addEventListener('message', handleMessage);
+        return () => window.removeEventListener('message', handleMessage);
+    }, []);
+
     if (!content) fetDbmlFile();
+
     // fetDbmlFile();
 
     const { t } = useTranslation();
