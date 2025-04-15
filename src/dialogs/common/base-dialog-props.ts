@@ -6,5 +6,4 @@ export interface BaseDialogProps {
 
 export interface BaseImportDialogProps {
     dialog: DialogProps;
-    setOpenImportDBMLDialog: React.Dispatch<React.SetStateAction<boolean>>;
 }

@@ -18,10 +18,7 @@ import {
     DialogTitle,
 } from '@/components/dialog/dialog';
 import { Button } from '@/components/button/button';
-import type {
-    BaseDialogProps,
-    BaseImportDialogProps,
-} from '../common/base-dialog-props';
+import type { BaseImportDialogProps } from '../common/base-dialog-props';
 import { useTranslation } from 'react-i18next';
 import { Editor } from '@/components/code-snippet/code-snippet';
 import { useTheme } from '@/hooks/use-theme';
@@ -82,7 +79,6 @@ export interface ImportDBMLDialogProps extends BaseImportDialogProps {
 export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     dialog,
     withCreateEmptyDiagram,
-    setOpenImportDBMLDialog,
 }) => {
     const [content, setContent] = useState('');
     const [projectID, setProjectID] = useState('');
@@ -95,7 +91,6 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
                     `https://admin-api.ucode.run/v1/chart?project-id=${projectID}&environment-id=${envID}`
                 )
                 .then((res) => {
-                    setOpenImportDBMLDialog(true);
                     setContent(res?.data?.data?.dbml);
                     setDBMLContent(res?.data?.data?.dbml);
                     window.removeEventListener('message', handleMessage);
@@ -113,7 +108,6 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
 
     const handleMessage = (event: MessageEvent) => {
         if (event.origin !== 'http://localhost:7777') {
-            console.warn('Ignored message from unknown origin:', event.origin);
             return;
         }
 
@@ -129,10 +123,15 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
         fetDbmlFile();
     }
 
-    if (!projectID && !envID) {
-        window.parent.postMessage({ type: 'READY' }, 'http://localhost:7777');
-        window.addEventListener('message', handleMessage);
-    }
+    useEffect(() => {
+        if (!projectID && !envID) {
+            window.parent.postMessage(
+                { type: 'READY' },
+                'http://localhost:7777'
+            );
+            window.addEventListener('message', handleMessage);
+        }
+    }, [projectID, envID]);
 
     // fetDbmlFile();
 
