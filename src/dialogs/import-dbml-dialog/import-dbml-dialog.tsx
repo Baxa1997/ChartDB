@@ -107,7 +107,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
 
     const handleMessage = useCallback(
         (event: MessageEvent) => {
-            if (event.origin !== 'http://localhost:7777') {
+            if (event.origin !== 'https://app.ucode.run') {
                 return;
             }
 
@@ -126,7 +126,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     }
 
     useEffect(() => {
-        window.parent.postMessage({ type: 'READY' }, 'http://localhost:7777');
+        window.parent.postMessage({ type: 'READY' }, 'https://app.ucode.run');
         window.addEventListener('message', handleMessage);
 
         return () => {
