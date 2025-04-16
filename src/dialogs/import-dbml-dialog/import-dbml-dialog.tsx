@@ -79,7 +79,7 @@ export interface ImportDBMLDialogProps extends BaseImportDialogProps {
 export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     dialog,
     withCreateEmptyDiagram,
-    setOpenDialog,
+    setOpenDialog = () => {},
 }) => {
     const [content, setContent] = useState('');
     const [projectID, setProjectID] = useState('');
