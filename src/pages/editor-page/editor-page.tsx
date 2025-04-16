@@ -1,5 +1,4 @@
 import React, { Suspense, useCallback, useEffect, useRef } from 'react';
-import { TopNavbar } from './top-navbar/top-navbar';
 import { useParams } from 'react-router-dom';
 import { useChartDB } from '@/hooks/use-chartdb';
 import { useDialog } from '@/hooks/use-dialog';
@@ -166,7 +165,7 @@ const EditorPageComponent: React.FC = () => {
             <section
                 className={`bg-background ${isDesktop ? 'h-screen w-screen' : 'h-dvh w-dvw'} flex select-none flex-col overflow-x-hidden`}
             >
-                <TopNavbar />
+                {/* <TopNavbar /> */}
                 <Suspense
                     fallback={
                         <div className="flex flex-1 items-center justify-center">

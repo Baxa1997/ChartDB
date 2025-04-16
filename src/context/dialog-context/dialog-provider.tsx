@@ -192,6 +192,7 @@ export const DialogProvider: React.FC<React.PropsWithChildren> = ({
             <ImportDBMLDialog
                 dialog={{ open: openImportDBMLDialog }}
                 {...importDBMLDialogParams}
+                setOpenDialog={setOpenImportDBMLDialog}
             />
         </dialogContext.Provider>
     );

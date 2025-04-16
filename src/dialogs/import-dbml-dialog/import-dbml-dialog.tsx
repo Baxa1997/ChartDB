@@ -79,22 +79,22 @@ export interface ImportDBMLDialogProps extends BaseImportDialogProps {
 export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     dialog,
     withCreateEmptyDiagram,
+    setOpenDialog,
 }) => {
     const [content, setContent] = useState('');
     const [projectID, setProjectID] = useState('');
     const [envID, setEnvID] = useState('');
 
     const fetDbmlFile = async () => {
-        if (!!projectID && !!envID) {
-            await axios
-                .get(
-                    `https://admin-api.ucode.run/v1/chart?project-id=${projectID}&environment-id=${envID}`
-                )
-                .then((res) => {
-                    setContent(res?.data?.data?.dbml);
-                    setDBMLContent(res?.data?.data?.dbml);
-                });
-        }
+        await axios
+            .get(
+                `https://admin-api.ucode.run/v1/chart?project-id=${projectID}&environment-id=${envID}`
+            )
+            .then((res) => {
+                setOpenDialog(true);
+                setContent(res?.data?.data?.dbml);
+                setDBMLContent(res?.data?.data?.dbml);
+            });
     };
 
     type ChartDataMessage = {
@@ -105,28 +105,27 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
         };
     };
 
-    const handleMessage = useCallback(
-        (event: MessageEvent) => {
-            if (event.origin !== 'https://app.ucode.run') {
-                return;
-            }
+    const handleMessage = (event: MessageEvent) => {
+        if (event.origin !== 'http://localhost:7777') {
+            return;
+        }
 
-            const data = event.data as ChartDataMessage;
+        const data = event.data as ChartDataMessage;
 
-            if (data.type === 'UPDATE_DATA') {
-                setProjectID(data.payload.projectID);
-                setEnvID(data.payload.envID);
-            }
-        },
-        [setProjectID, setEnvID]
-    );
+        if (data.type === 'UPDATE_DATA') {
+            console.log('dataaaaaaa received', data?.payload);
 
-    if (!content) {
-        fetDbmlFile();
-    }
+            setProjectID(data.payload.projectID);
+            setEnvID(data.payload.envID);
+        }
+    };
 
     useEffect(() => {
-        window.parent.postMessage({ type: 'READY' }, 'https://app.ucode.run');
+        fetDbmlFile();
+    }, [projectID, envID]);
+
+    useEffect(() => {
+        window.parent.postMessage({ type: 'READY' }, 'http://localhost:7777');
         window.addEventListener('message', handleMessage);
 
         return () => {

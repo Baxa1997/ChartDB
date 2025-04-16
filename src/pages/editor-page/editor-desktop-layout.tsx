@@ -10,7 +10,6 @@ import { useLayout } from '@/hooks/use-layout';
 import type { Diagram } from '@/lib/domain/diagram';
 import { cn } from '@/lib/utils';
 import { SidebarProvider } from '@/components/sidebar/sidebar';
-import { EditorSidebar } from './editor-sidebar/editor-sidebar';
 
 export interface EditorDesktopLayoutProps {
     initialDiagram?: Diagram;
@@ -26,7 +25,7 @@ export const EditorDesktopLayout: React.FC<EditorDesktopLayoutProps> = ({
             open={false}
             className="h-full min-h-0"
         >
-            <EditorSidebar />
+            {/* <EditorSidebar /> */}
             <ResizablePanelGroup direction="horizontal">
                 <ResizablePanel
                     defaultSize={25}

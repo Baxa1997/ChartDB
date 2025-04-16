@@ -6,4 +6,5 @@ export interface BaseDialogProps {
 
 export interface BaseImportDialogProps {
     dialog: DialogProps;
+    setOpenDialog: (value: boolean) => void;
 }
