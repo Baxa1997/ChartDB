@@ -106,7 +106,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     };
 
     const handleMessage = (event: MessageEvent) => {
-        if (event.origin !== 'https://api.admin.u-code.io') {
+        if (event.origin !== 'https://app.u-code.io') {
             return;
         }
 
@@ -123,10 +123,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     }, [projectID, envID]);
 
     useEffect(() => {
-        window.parent.postMessage(
-            { type: 'READY' },
-            'https://api.admin.u-code.io'
-        );
+        window.parent.postMessage({ type: 'READY' }, 'https://app.u-code.io');
         window.addEventListener('message', handleMessage);
 
         return () => {
