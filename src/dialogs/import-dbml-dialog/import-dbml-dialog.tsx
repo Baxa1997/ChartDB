@@ -88,7 +88,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     const fetDbmlFile = async () => {
         await axios
             .get(
-                `https://admin-api.ucode.run/v1/chart?project-id=${projectID}&environment-id=${envID}`
+                `https://api.admin.u-code.io/v1/chart?project-id=${projectID}&environment-id=${envID}`
             )
             .then((res) => {
                 setOpenDialog(true);
@@ -106,15 +106,13 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     };
 
     const handleMessage = (event: MessageEvent) => {
-        if (event.origin !== 'https://app.ucode.run') {
+        if (event.origin !== 'https://api.admin.u-code.io') {
             return;
         }
 
         const data = event.data as ChartDataMessage;
 
         if (data.type === 'UPDATE_DATA') {
-            console.log('dataaaaaaa received', data?.payload);
-
             setProjectID(data.payload.projectID);
             setEnvID(data.payload.envID);
         }
@@ -125,7 +123,10 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     }, [projectID, envID]);
 
     useEffect(() => {
-        window.parent.postMessage({ type: 'READY' }, 'https://app.ucode.run');
+        window.parent.postMessage(
+            { type: 'READY' },
+            'https://api.admin.u-code.io'
+        );
         window.addEventListener('message', handleMessage);
 
         return () => {
