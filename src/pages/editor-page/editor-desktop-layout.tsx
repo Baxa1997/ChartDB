@@ -8,7 +8,6 @@ import { SidePanel } from './side-panel/side-panel';
 import { Canvas } from './canvas/canvas';
 import { useLayout } from '@/hooks/use-layout';
 import type { Diagram } from '@/lib/domain/diagram';
-import { cn } from '@/lib/utils';
 import { SidebarProvider } from '@/components/sidebar/sidebar';
 
 export interface EditorDesktopLayoutProps {
