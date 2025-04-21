@@ -32,6 +32,8 @@ import { useToast } from '@/components/toast/use-toast';
 import { Spinner } from '@/components/spinner/spinner';
 import { debounce } from '@/lib/utils';
 import axios from 'axios';
+import { useStorage } from '@/hooks/use-storage';
+import { useLocation } from 'react-router-dom';
 
 interface DBMLError {
     message: string;
@@ -84,6 +86,10 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     const [content, setContent] = useState('');
     const [projectID, setProjectID] = useState('');
     const [envID, setEnvID] = useState('');
+    const location = useLocation();
+    const pathName = location?.pathname?.split('/');
+
+    const { deleteDiagram } = useStorage();
 
     const fetDbmlFile = async () => {
         await axios
@@ -119,6 +125,7 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     };
 
     useEffect(() => {
+        deleteDiagram(pathName?.[pathName?.length - 1]);
         fetDbmlFile();
     }, [projectID, envID]);
 
