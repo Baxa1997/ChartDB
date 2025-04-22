@@ -3,7 +3,6 @@ import type { DialogContext } from './dialog-context';
 import { dialogContext } from './dialog-context';
 import { CreateDiagramDialog } from '@/dialogs/create-diagram-dialog/create-diagram-dialog';
 import type { OpenDiagramDialogProps } from '@/dialogs/open-diagram-dialog/open-diagram-dialog';
-import { OpenDiagramDialog } from '@/dialogs/open-diagram-dialog/open-diagram-dialog';
 import type { ExportSQLDialogProps } from '@/dialogs/export-sql-dialog/export-sql-dialog';
 import { ExportSQLDialog } from '@/dialogs/export-sql-dialog/export-sql-dialog';
 import { DatabaseType } from '@/lib/domain/database-type';
@@ -29,6 +28,11 @@ export const DialogProvider: React.FC<React.PropsWithChildren> = ({
     const [openOpenDiagramDialog, setOpenOpenDiagramDialog] = useState(false);
     const [openDiagramDialogParams, setOpenDiagramDialogParams] =
         useState<Omit<OpenDiagramDialogProps, 'dialog'>>();
+    console.log(
+        'openOpenDiagramDialog',
+        openOpenDiagramDialog,
+        openDiagramDialogParams
+    );
 
     const openOpenDiagramDialogHandler: DialogContext['openOpenDiagramDialog'] =
         useCallback(
@@ -162,10 +166,10 @@ export const DialogProvider: React.FC<React.PropsWithChildren> = ({
         >
             {children}
             <CreateDiagramDialog dialog={{ open: openNewDiagramDialog }} />
-            <OpenDiagramDialog
+            {/* <OpenDiagramDialog
                 dialog={{ open: openOpenDiagramDialog }}
                 {...openDiagramDialogParams}
-            />
+            /> */}
             <ExportSQLDialog
                 dialog={{ open: openExportSQLDialog }}
                 {...exportSQLDialogParams}

@@ -84,8 +84,10 @@ export const ImportDBMLDialog: React.FC<ImportDBMLDialogProps> = ({
     setOpenDialog = () => {},
 }) => {
     const [content, setContent] = useState('');
-    const [projectID, setProjectID] = useState('');
-    const [envID, setEnvID] = useState('');
+    const [projectID, setProjectID] = useState(
+        'b9029a9f-9431-4a44-b5e4-be148e4cc573'
+    );
+    const [envID, setEnvID] = useState('d882b905-5e04-401e-bf90-b06fa20f006f');
     const location = useLocation();
     const pathName = location?.pathname?.split('/');
 
